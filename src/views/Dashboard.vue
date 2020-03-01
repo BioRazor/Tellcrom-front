@@ -8,7 +8,7 @@
           p {{item.id}}
         template(slot="content")
           p {{item.data}}
-    .p.col-12.p-md-6.p-lg-3(v-for="chart in charts" :key="chart.id")
+    .p.col-12.p-md-6.p-lg-6(v-for="chart in charts" :key="chart.id")
       Card
         template(slot="title")
           p {{chart.id}}
@@ -52,14 +52,44 @@ export default {
             datasets: [
               {
                 label: "Proyectos",
-                data: [65, 59, 80, 81, 56, 55, 40],
+                data: [5, 8, 12, 8, 5, 3, 7],
                 fill: false,
                 backgroundColor: "#2f4860",
                 borderColor: "#2f4860"
               },
               {
                 label: "Contratos",
-                data: [28, 48, 40, 19, 86, 27, 90],
+                data: [7, 8, 10, 12, 10, 7, 12],
+                fill: false,
+                backgroundColor: "#00bb7e",
+                borderColor: "#00bb7e"
+              }
+            ]
+          }
+        },
+        {
+          id: "Ganancias $",
+          data: {
+            labels: [
+              "Enero",
+              "Febrero",
+              "Marzo",
+              "Abril",
+              "Mayo",
+              "Junio",
+              "Julio"
+            ],
+            datasets: [
+              {
+                label: "Proyectos",
+                data: [5000, 8000, 12000, 8000, 5000, 3000, 7000],
+                fill: false,
+                backgroundColor: "#2f4860",
+                borderColor: "#2f4860"
+              },
+              {
+                label: "Contratos",
+                data: [700, 800, 1000, 1200, 1000, 700, 1200],
                 fill: false,
                 backgroundColor: "#00bb7e",
                 borderColor: "#00bb7e"
