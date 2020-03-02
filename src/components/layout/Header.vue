@@ -38,12 +38,12 @@ export default {
         },
         {
           label: "Usuarios",
-          icon: "pi pi-users",
-          items: [{ label: "Ver" }]
+          icon: "pi pi-users"
         },
         {
           label: "Proyectos",
-          icon: "pi pi-briefcase"
+          icon: "pi pi-briefcase",
+          command: () => this.$router.push({ name: "Projects" })
         },
         {
           label: "Contratos/Servicios",

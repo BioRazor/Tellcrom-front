@@ -8,6 +8,10 @@ import "primevue/resources/themes/luna-blue/theme.css";
 import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
 
+//Vuelidate
+import Vuelidate from 'vuelidate'
+Vue.use(Vuelidate)
+
 Vue.config.productionTip = false;
 
 new Vue({

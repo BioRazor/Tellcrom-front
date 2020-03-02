@@ -1,6 +1,6 @@
 <template lang="pug">
     .p-grid.p-justify-center.p-fluid
-        .p-col-12.p-justify-center
+        .p-col-12.p-md-6.p-lg-4.p-justify-center
             img(alt="Vue logo" src="../assets/logo.png")
             .p-inputgroup.p-justify-center
                 span.p-inputgroup-addon
