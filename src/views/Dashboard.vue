@@ -1,7 +1,7 @@
 <template lang="pug">
   .p-grid.p-justify-center.p-fluid
     .p-col-12
-      img(alt="Vue logo" src="../assets/logo.png")
+      img(alt="Tellcrom logo" src="../assets/logo.png")
     .p-col-12.p-md-6.p-lg-3(v-for="item in items" :key="item.id")
       Card
         template(slot="title")
@@ -99,6 +99,11 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    goToProjects() {
+      this.$router.push({ name: "Projects" });
+    }
   }
 };
 </script>

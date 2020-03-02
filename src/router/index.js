@@ -1,8 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
+
+//local Components
 import Login from "@/views/Login.vue";
-import Projects from "@/views/projects/Projects.vue";
+import ProjectsTable from "@/views/projects/ProjectsTable.vue";
+import ProjectCreate from "@/views/projects/Create.vue";
 
 Vue.use(VueRouter);
 
@@ -29,7 +32,12 @@ const routes = [
   {
     path: "/projects",
     name: "Projects",
-    component: Projects
+    component: ProjectsTable
+  },
+  {
+    path: "/projects/create",
+    name: "ProjectCreate",
+    component: ProjectCreate
   }
 ];
 

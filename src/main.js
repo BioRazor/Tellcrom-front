@@ -7,10 +7,14 @@ import store from "./store";
 import "primevue/resources/themes/luna-blue/theme.css";
 import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
+import ToastService from "primevue/toastservice";
+import Toast from "primevue/toast";
+Vue.use(ToastService);
+Vue.use(Toast);
 
 //Vuelidate
-import Vuelidate from 'vuelidate'
-Vue.use(Vuelidate)
+import Vuelidate from "vuelidate";
+Vue.use(Vuelidate);
 
 Vue.config.productionTip = false;
 

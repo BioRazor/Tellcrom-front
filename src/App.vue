@@ -2,13 +2,16 @@
   #app
     .p-grid
       pm-header
-    router-view
+      Toast
+    transition(name="fade" mode="out-in")
+      router-view
 </template>
 <script>
 import PmHeader from "@/components/layout/Header.vue";
+import Toast from "primevue/toast";
 import "primeflex/primeflex.css";
 export default {
-  components: { PmHeader },
+  components: { PmHeader, Toast },
   data() {
     return {};
   }
@@ -31,5 +34,14 @@ export default {
 }
 .p-menuitem {
   text-align: left;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition-duration: 0.3s;
+  transition-property: opacity;
+  transition-timing-function: ease;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
