@@ -6,6 +6,11 @@ import Dashboard from "../views/Dashboard.vue";
 import Login from "@/views/Login.vue";
 import ProjectsTable from "@/views/projects/ProjectsTable.vue";
 import ProjectCreate from "@/views/projects/Create.vue";
+//Contracts
+import Contracts from "@/views/contracts/Contracts.vue";
+import CreateContract from "@/views/contracts/CreateContract.vue";
+import TheTarget from "@/views/contracts/TheTarget.vue";
+import TheContract from "@/views/contracts/TheContract.vue";
 
 Vue.use(VueRouter);
 
@@ -38,6 +43,26 @@ const routes = [
     path: "/projects/create",
     name: "ProjectCreate",
     component: ProjectCreate
+  },
+  {
+    path: "/contracts",
+    name: "Contracts",
+    component: Contracts
+  },
+  {
+    path: "/contracts/create",
+    name: "CreateContract",
+    component: CreateContract,
+    children: [
+      {
+        path: "",
+        component: TheTarget
+      },
+      {
+        path: "/contracts/create/contract",
+        component: TheContract
+      }
+    ]
   }
 ];
 

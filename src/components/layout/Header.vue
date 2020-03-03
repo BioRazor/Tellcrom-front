@@ -34,7 +34,10 @@ export default {
         {
           label: "Dashboard",
           icon: "pi pi-home",
-          command: () => this.$router.push({ name: "Dashboard" })
+          command: () => {
+            this.visibleLeft = false;
+            this.$router.push({ name: "Dashboard" });
+          }
         },
         {
           label: "Usuarios",
@@ -43,16 +46,40 @@ export default {
         {
           label: "Proyectos",
           icon: "pi pi-briefcase",
-          command: () => this.$router.push({ name: "Projects" })
+          command: () => {
+            this.visibleLeft = false;
+            this.$router.push({ name: "Projects" });
+          }
         },
         {
           label: "Contratos/Servicios",
-          icon: "pi pi-folder"
+          icon: "pi pi-folder",
+          command: () => {
+            this.visibleLeft = false;
+            this.$router.push({ name: "Contracts" });
+          }
+        },
+        {
+          label: "Catalogo",
+          icon: "pi pi-globe",
+          items: [
+            {
+              label: "Productos",
+              icon: "pi pi-shopping-cart"
+            },
+            {
+              label: "Servicios",
+              icon: "pi pi-ticket"
+            }
+          ]
         },
         {
           label: "Backend",
           icon: "pi pi-external-link",
-          command: () => this.$router.push("/login")
+          command: () => {
+            this.visibleLeft = false;
+            this.$router.push("/login");
+          }
         }
       ]
     };
