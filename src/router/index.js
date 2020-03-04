@@ -51,12 +51,12 @@ const routes = [
   },
   {
     path: "/contracts/create",
-    name: "CreateContract",
     component: CreateContract,
     children: [
       {
         path: "",
-        component: TheTarget
+        component: TheTarget,
+        name: "CreateContract"
       },
       {
         path: "/contracts/create/contract",
