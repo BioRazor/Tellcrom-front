@@ -5,6 +5,7 @@
             
             Steps(:model="items" :readonly="true")
             keep-alive
+              transition(name="fade" mode="out-in")
                 router-view(
                     :formData="formObject"
                     @prevPage="prevPage($event)"
@@ -24,7 +25,11 @@ export default {
         },
         {
           label: "El Contrato",
-          to: "/contracts/create/contract"
+          to: "contract"
+        },
+        {
+          label: "Productos",
+          to: "products"
         }
       ],
       formObject: {}

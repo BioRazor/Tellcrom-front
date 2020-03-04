@@ -61,11 +61,19 @@
                         p(style="text-align:left") Supervisor:
                         .p-inputgroup(style="margin-top:15px;")
                             Button(icon="pi pi-plus")
-                            AutoComplete(v-model="supervisor" field="name" :dropdown="true")
+                            AutoComplete(v-model="contract.supervisor" field="name" :dropdown="true")
                 
                 .p-grid.p-fluid.wizard-content
                     .p-col-12.p-md-4.p-lg-4
-                        p(style="text-align:left") Valor de las Horas de Jornadas:
+                        p(style="text-align:left") Valor por hora de Jornadas de Mtto ($):
+                        .p-inputgroup
+                            Spinner(
+                                style="margin-top:15px;"
+                                :min="0"
+                                :step="1"
+                                v-model="contract.valorJornada"
+                            )
+                            span.p-inputgroup-addon(style="margin-top:15px;") $
 
             //- Pie de tarjeta
             template(slot="footer")
@@ -80,7 +88,7 @@
                     .p-col-4.wizard-footer-next-button
                         Button(
                             label="Next"
-                            @click="nextPage(!$v.clientForm.$invalid && !$v.siteForm.$invalid)"
+                            @click="nextPage(true)"
                             icon="pi pi-angle-right" iconPos="right")
 </template>
 <script>
@@ -89,15 +97,26 @@ import Button from "primevue/button";
 import FileUpload from "primevue/fileupload";
 import Calendar from "primevue/calendar";
 import AutoComplete from "primevue/autocomplete";
+import InputText from "primevue/inputtext";
+import Spinner from "primevue/spinner";
 export default {
-  components: { Card, Button, FileUpload, Calendar, AutoComplete },
+  components: {
+    Card,
+    Button,
+    FileUpload,
+    Calendar,
+    AutoComplete,
+    InputText,
+    Spinner
+  },
   data() {
     return {
       contract: {
         inicio: null,
-        fin: null
+        fin: null,
+        valorJornada: null,
+        supervisor: ""
       },
-      supervisor: null,
       es: {
         firstDayOfWeek: 1,
         dayNames: [
@@ -153,8 +172,8 @@ export default {
         return;
       }
       this.$emit("nextPage", {
-        formData: {},
-        pageIndex: 0
+        formData: { contract: this.contract },
+        pageIndex: 1
       });
     },
     prevPage() {

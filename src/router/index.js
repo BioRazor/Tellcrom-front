@@ -11,6 +11,7 @@ import Contracts from "@/views/contracts/Contracts.vue";
 import CreateContract from "@/views/contracts/CreateContract.vue";
 import TheTarget from "@/views/contracts/TheTarget.vue";
 import TheContract from "@/views/contracts/TheContract.vue";
+import TheProducts from "@/views/contracts/TheProducts.vue";
 
 Vue.use(VueRouter);
 
@@ -59,8 +60,14 @@ const routes = [
         name: "CreateContract"
       },
       {
-        path: "/contracts/create/contract",
-        component: TheContract
+        path: "contract",
+        component: TheContract,
+        name: " TheContract"
+      },
+      {
+        path: "products",
+        component: TheProducts,
+        name: "TheProducts"
       }
     ]
   }
