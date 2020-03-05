@@ -17,22 +17,18 @@
                         p(style="text-align:left") Más adelante podrá colocar información detallada acerca de cada uno de los productos (Ubicación, Seriales, Marca, Modelo).
                 
                 .p-grid.p-fluid.wizard-content
-                    .p-col-12.p-md-3.p-lg-3
-                        p(style="text-align:left") Cámaras:
-                        .p-inputgroup
-                            span.p-inputgroup-addon(style="margin-top:15px;")
-                                Checkbox(                                    
-                                    :binary="true"
-                                    v-model="products.camaras.incluido"
-                                )
-                            Spinner(
-                            style="margin-top:15px;"
-                            :min="0"
-                            :step="1"
-                            v-model="products.camaras.cantidad"
-                            v-tooltip.top="'Ingrese cantidad de Cámaras'"
-                            )
-
+                    .p-col-12(v-for="p in productsCategories" :key="p.id" style="text-align:left")
+                        Checkbox(
+                          :id="p.id"
+                          :inputId="p.id"
+                          :name="p.name"
+                          :value="p.name"
+                          v-model="products"
+                        )
+                        label(:for="p.id" style="margin-left:5px") {{p.name}}
+                      
+                          
+                        
             //- Pie de tarjeta
             template(slot="footer")
                 .p-grid.p-fluid.p-justify-between.wizard-footer.demo-footer
@@ -53,55 +49,23 @@
 import Card from "primevue/card";
 import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
-import Spinner from "primevue/spinner";
-import Tooltip from "primevue/tooltip";
 
 export default {
-  components: { Card, Button, Checkbox, Spinner },
+  components: { Card, Button, Checkbox },
   data() {
     return {
-      products: {
-        camaras: {
-          incluido: false,
-          cantidad: 0
-        },
-        nvr: {
-          incluido: false,
-          cantidad: 0
-        },
-        dvr: {
-          incluido: false,
-          cantidad: 0
-        },
-        centralTelefonica: {
-          incluido: false,
-          cantidad: 0
-        },
-        gateway: {
-          incluido: false,
-          cantidad: 0
-        },
-        telefonoIP: {
-          incluido: false,
-          cantidad: 0
-        },
-        servidor: {
-          incluido: false,
-          cantidad: 0
-        },
-        cercoElectrico: {
-          incluido: false,
-          cantidad: 0
-        },
-        energizador: {
-          incluido: false,
-          cantidad: 0
-        },
-        ups: {
-          incluido: false,
-          cantidad: 0
-        }
-      }
+      products: [],
+      productsCategories: [
+        { id: "1", name: "Cámaras" },
+        { id: "2", name: "NVR" },
+        { id: "3", name: "DVR" },
+        { id: "4", name: "Central Telefónica" },
+        { id: "5", name: "Gateway" },
+        { id: "6", name: "Teléfono IP" },
+        { id: "7", name: "Servidores" },
+        { id: "8", name: "Cerco Electrico" },
+        { id: "9", name: "UPS" }
+      ]
     };
   },
   methods: {
@@ -112,16 +76,13 @@ export default {
         return;
       }
       this.$emit("nextPage", {
-        formData: {},
+        formData: { products: this.products },
         pageIndex: 2
       });
     },
     prevPage() {
       this.$emit("prevPage", { pageIndex: 2 });
     }
-  },
-  directives: {
-    tooltip: Tooltip
   }
 };
 </script>

@@ -12,6 +12,7 @@ import CreateContract from "@/views/contracts/CreateContract.vue";
 import TheTarget from "@/views/contracts/TheTarget.vue";
 import TheContract from "@/views/contracts/TheContract.vue";
 import TheProducts from "@/views/contracts/TheProducts.vue";
+import TheConfirmation from "@/views/contracts/TheConfirmation.vue";
 
 Vue.use(VueRouter);
 
@@ -60,14 +61,19 @@ const routes = [
         name: "CreateContract"
       },
       {
-        path: "contract",
+        path: "/contracts/contract",
         component: TheContract,
         name: " TheContract"
       },
       {
-        path: "products",
+        path: "/contracts/products",
         component: TheProducts,
         name: "TheProducts"
+      },
+      {
+        path: "/contracts/confirmation",
+        component: TheConfirmation,
+        name: "TheConfirmation"
       }
     ]
   }
