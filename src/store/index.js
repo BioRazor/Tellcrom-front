@@ -1,13 +1,16 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import loginModule from "./modules/login";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-    logged: true
-  },
+  state: {},
+  getters: {},
   mutations: {},
   actions: {},
-  modules: {}
+  modules: {
+    loginModule //Manage the login logic and states
+  }
 });

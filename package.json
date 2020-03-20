@@ -8,8 +8,10 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "chart.js": "^2.9.3",
     "core-js": "^3.6.4",
+    "crypto-js": "^4.0.0",
     "node-sass": "^4.13.1",
     "primeflex": "^1.0.0",
     "primeicons": "^2.0.0",
@@ -17,6 +19,8 @@
     "pug": "^2.0.4",
     "pug-plain-loader": "^1.0.0",
     "sass-loader": "^8.0.2",
+    "secure-web-storage": "^1.0.2",
+    "simple-crypto-js": "^2.2.0",
     "vue": "^2.6.11",
     "vue-router": "^3.1.5",
     "vuelidate": "^0.7.5",

@@ -1,0 +1,4 @@
+const secretKey =
+  "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzZWNyZXQiOiJUZWxsY3JvbSJ9.v07Hm9RAv1dTQyMeidtlskGjMUuMaRPq5nE6o3afHHWUg_ssuKVNbofhXAPSVK9g9YVO6TdhEgug4WcJks9u1w";
+
+export default secretKey;

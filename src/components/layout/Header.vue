@@ -1,13 +1,13 @@
 <template lang="pug">
     .p-col-12
         Toolbar(:model="items")            
-            template(slot="left" v-if="logged")
+            template(slot="left" v-if="isAuthenticated")
                 Button(icon="pi pi-bars" @click="visibleLeft = true")
 
-            template(slot="right" v-if="logged")
+            template(slot="right" v-if="isAuthenticated")
                 InputText(placeholder="Search" type="text")
                 Button(
-                    v-if="logged"
+                    v-if="isAuthenticated"
                 label="Logout"
                 icon="pi pi-power-off"
                 :style="{ 'margin-left': '.25em' }"
@@ -15,6 +15,8 @@
         Sidebar(:visible.sync="visibleLeft")
           p Menú
           PanelMenu(:model="items")
+        ProgressBar(mode="indeterminate" style="height: .5em" v-show="status=='loading'")
+        h4 user {{user}}
 </template>
 <script>
 import Toolbar from "primevue/toolbar";
@@ -22,11 +24,12 @@ import PanelMenu from "primevue/panelmenu";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import Sidebar from "primevue/sidebar";
+import ProgressBar from "primevue/progressbar";
 
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
-  components: { PanelMenu, Toolbar, InputText, Button, Sidebar },
+  components: { PanelMenu, Toolbar, InputText, Button, Sidebar, ProgressBar },
   data() {
     return {
       visibleLeft: false,
@@ -85,7 +88,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["logged"])
+    ...mapGetters(["isAuthenticated", "status", "user"])
   }
 };
 </script>

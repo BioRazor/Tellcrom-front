@@ -20,6 +20,7 @@
 //PrimeVUE
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
+import { mapActions, mapGetters } from "vuex";
 
 //Vualidator
 import { required } from "vuelidate/lib/validators";
@@ -44,7 +45,11 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters({ user: "user" })
+  },
   methods: {
+    ...mapActions(["auth_request"]),
     submit() {
       this.$v.$touch();
       if (this.$v.$invalid) {
@@ -61,6 +66,29 @@ export default {
           detail: "Iniciando Sesión",
           life: 3000
         });
+        const user = {
+          username: this.loginForm.username,
+          password: this.loginForm.password
+        };
+        this.auth_request(user)
+          .then(() => {
+            this.$toast.add({
+              severity: "success",
+              summary: "Login Info",
+              detail: `Bienvenido ${this.user.first_name}!`,
+              life: 3000
+            }),
+              this.$router.push("/");
+          })
+          .catch(() => {
+            this.$toast.add({
+              severity: "error",
+              summary: "Login Info",
+              detail:
+                "Verifique los datos ingresados y su conexión con el servidor",
+              life: 3000
+            });
+          });
       }
     }
   }
