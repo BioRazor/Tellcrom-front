@@ -11,6 +11,9 @@
                     span.p-inputgroup-addon
                         i.pi.pi-key
                     InputText(type="password" placeholder="Password" v-model.trim="$v.loginForm.password.$model")
+                .p-inputgroup.p-justify-center
+                  Checkbox(id="binary" v-model.trim="$v.loginForm.remember.$model" :binary="true")
+                  label(for="binary" class="p-checkbox-label" style="font-weight: bold") Recuerdame
                 Button(type="submit" label="Login" icon="pi pi-sign-in")
                 
 
@@ -20,18 +23,20 @@
 //PrimeVUE
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
+import Checkbox from "primevue/checkbox";
 import { mapActions, mapGetters } from "vuex";
 
 //Vualidator
 import { required } from "vuelidate/lib/validators";
 
 export default {
-  components: { InputText, Button },
+  components: { InputText, Button, Checkbox },
   data() {
     return {
       loginForm: {
         username: "",
-        password: ""
+        password: "",
+        remember: false
       }
     };
   },
@@ -42,7 +47,8 @@ export default {
       },
       password: {
         required
-      }
+      },
+      remember: {}
     }
   },
   computed: {
@@ -68,19 +74,21 @@ export default {
         });
         const user = {
           username: this.loginForm.username,
-          password: this.loginForm.password
+          password: this.loginForm.password,
+          remember: this.loginForm.remember
         };
         this.auth_request(user)
           .then(() => {
+            this.$router.push("/");
             this.$toast.add({
               severity: "success",
               summary: "Login Info",
               detail: `Bienvenido ${this.user.first_name}!`,
               life: 3000
-            }),
-              this.$router.push("/");
+            });
           })
-          .catch(() => {
+          .catch(error => {
+            console.log(error);
             this.$toast.add({
               severity: "error",
               summary: "Login Info",

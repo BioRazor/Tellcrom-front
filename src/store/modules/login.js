@@ -4,6 +4,7 @@ import userService from "@/services/usersAPI.js";
 //LoginUtils
 import { setLoginData } from "@/utils/loginUtils.js";
 import { getLoginData } from "@/utils/loginUtils.js";
+import { removeLoginData } from "@/utils/loginUtils.js";
 
 const state = {
   token: getLoginData.token(),
@@ -24,15 +25,24 @@ const actions = {
       userService
         .login(user.username, user.password)
         .then(resp => {
-          setLoginData(resp);
+          if (user.remember) {
+            setLoginData(resp);
+          }
           commit("auth_success", resp);
           resolve(resp);
         })
         .catch(err => {
           commit("auth_error", err);
-          localStorage.removeItem("user-token"); // if the request fails, remove any possible user token if possible
+          removeLoginData();
           reject(err);
         });
+    });
+  },
+  logout({ commit }) {
+    return new Promise(resolve => {
+      commit("logout");
+      removeLoginData();
+      resolve();
     });
   }
 };
@@ -48,6 +58,10 @@ const mutations = {
   },
   auth_error(state) {
     state.status = "error";
+  },
+  logout(state) {
+    state.user = "";
+    state.token = "";
   }
 };
 

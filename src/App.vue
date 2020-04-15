@@ -1,19 +1,28 @@
 <template lang="pug">
   #app
     .p-grid
-      pm-header
+      pm-header(v-if="user")
       Toast
     transition(name="fade" mode="out-in")
       router-view
 </template>
 <script>
-import PmHeader from "@/components/layout/Header.vue";
+//PrimeVue
 import Toast from "primevue/toast";
 import "primeflex/primeflex.css";
+
+//components
+import PmHeader from "@/components/layout/Header.vue";
+
+//vue
+import { mapGetters } from "vuex";
 export default {
   components: { PmHeader, Toast },
   data() {
     return {};
+  },
+  computed: {
+    ...mapGetters(["user"])
   }
 };
 </script>

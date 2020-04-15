@@ -3,7 +3,10 @@
         .p-col-12
             h1 Contratos - Servicios
         .p-col-12
+            ProgressSpinner(v-show="loading")
+            h2(v-show="contracts && contracts.length == 0") Sin Contratos Aún
             DataTable(
+                    v-show="!loading"  
                     :value="contracts"
                     :filters="filters"
                     :paginator="true"
@@ -36,7 +39,7 @@
                             placeholder="Filtrar por ID"
                             style="margin-top:5px")               
                 Column(
-                        field="Cliente"
+                        field="client.user.full_name"
                         header="Cliente"
                         filterMatchMode="contains"
                         :sortable="true"
@@ -44,11 +47,13 @@
                     template(#filter)
                             InputText.p-column-filter(
                                 type="text"
-                                v-model="filters['Cliente']"
+                                v-model="filters['client.user.full_name']"
                                 placeholder="Filtrar por Cliente"
                                 style="margin-top:5px")
+                    template(#body="slotProps")
+                      p {{slotProps.data.client.user.full_name}}
                 Column(
-                        field="Lugar"
+                        field="site.name"
                         header="Lugar"
                         filterMatchMode="contains"
                         :sortable="true"
@@ -60,7 +65,7 @@
                             placeholder="Filtrar por Lugar"
                             style="margin-top:5px")               
                 Column(
-                        field="Supervisor"
+                        field="supervisor.user.full_name"
                         header="Supervisor"
                         filterMatchMode="contains"
                         :sortable="true"
@@ -71,20 +76,34 @@
                                 v-model="filters['Supervisor']"
                                 placeholder="Filtrar por Supervisor"
                                 style="margin-top:5px")
+                    template(#body="slotProps")
+                      p {{slotProps.data.client.user.full_name}}
                 Column(
-                        field="InicioFin"
-                        header="Inicio-Fin" 
+                        field="start"
+                        header="Inicio" 
                         filterMatchMode="contains"
                         :sortable="true"
                     )
                     template(#filter)
                             InputText.p-column-filter(
                                 type="text"
-                                v-model="filters['InicioFin']"
-                                placeholder="Filtrar por Inicio/Fin"
+                                v-model="filters['start']"
+                                placeholder="Filtrar por Inicio"
                                 style="margin-top:5px")
                 Column(
-                        field="Estatus"
+                        field="end"
+                        header="Fin" 
+                        filterMatchMode="contains"
+                        :sortable="true"
+                    )
+                    template(#filter)
+                            InputText.p-column-filter(
+                                type="text"
+                                v-model="filters['end']"
+                                placeholder="Filtrar por Fin"
+                                style="margin-top:5px")
+                Column(
+                        field="status"
                         header="Estatus"
                         filterMatchMode="equals"
                         :sortable="true"
@@ -118,9 +137,10 @@
                         headerStyle="width: 8em"
                         bodyStyle="text-align: center"
                     )
-                    template(#body)
+                    template(#body="slotProps")
                         Button(type="button"
                         icon="pi pi-search"
+                        @click="showContract(slotProps.data)"
                         class="p-button-success"
                         style="margin-right: .5em")
                         Button(
@@ -139,49 +159,49 @@
               class="p-button-success"
               icon="pi pi-ticket"
               style="margin-left:5px")
+        
+        //-Modal to show Contract Information
+        contractDialog(
+          v-if="selectedContract"
+          :contract="selectedContract"
+          :visible="showingContract"
+          v-on:close="closeModal"
+        )
 </template>
 <script>
+//PrimeVue
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Dropdown from "primevue/dropdown";
 import OverlayPanel from "primevue/overlaypanel";
+import ProgressSpinner from "primevue/progressspinner";
+
+//Api
+import contractService from "@/services/contractsAPI.js";
+
+//Components
+import contractDialog from "@/components/contracts/contractDialog.vue";
+
 export default {
-  components: { DataTable, Column, Button, InputText, Dropdown, OverlayPanel },
+  components: {
+    DataTable,
+    Column,
+    Button,
+    InputText,
+    Dropdown,
+    OverlayPanel,
+    ProgressSpinner,
+    contractDialog
+  },
   data() {
     return {
       filters: {},
+      loading: false,
       selectedContract: null,
-      contracts: [
-        {
-          id: "1",
-          Lugar: "Estadio Caracas",
-          Cliente: "MLB",
-          Supervisor: "Jose Armando",
-          InicioFin: "30/03/2020",
-          Estatus: "Activo",
-          Tipo: "Contrato"
-        },
-        {
-          id: "2",
-          Lugar: "Parafait Perú",
-          Cliente: "CoolPark",
-          Supervisor: "Jose Armando",
-          InicioFin: "1/10/2019",
-          Estatus: "Terminado",
-          Tipo: "Servicio"
-        },
-        {
-          id: "3",
-          Lugar: "Hesperia Tucacas",
-          Cliente: "Hesperia WTC",
-          Supervisor: "David Abreu",
-          InicioFin: "1/10/2020",
-          Estatus: "Activo",
-          Tipo: "Contrato"
-        }
-      ],
+      contracts: null,
+      showingContract: false,
       statuses: [
         {
           status: "Activo",
@@ -212,6 +232,23 @@ export default {
       ]
     };
   },
+  created() {
+    this.loading = true;
+    contractService
+      .list()
+      .then(resp => {
+        this.contracts = resp;
+        this.loading = false;
+      })
+      .catch(() => {
+        this.$toast.add({
+          severity: "error",
+          summary: "Login Info",
+          detail: "Verifique su conexión con el servidor",
+          life: 3000
+        });
+      });
+  },
   methods: {
     toggle(event) {
       this.$refs.create.toggle(event);
@@ -219,7 +256,14 @@ export default {
     goToCreateContract() {
       this.$router.push({ name: "CreateContract" });
     },
-    goToCreateService() {}
+    goToCreateService() {},
+    showContract(data) {
+      this.selectedContract = data;
+      this.showingContract = true;
+    },
+    closeModal() {
+      this.showingContract = false;
+    }
   }
 };
 </script>

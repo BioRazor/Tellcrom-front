@@ -7,18 +7,21 @@
             template(slot="right" v-if="isAuthenticated")
                 InputText(placeholder="Search" type="text")
                 Button(
-                    v-if="isAuthenticated"
-                label="Logout"
-                icon="pi pi-power-off"
-                :style="{ 'margin-left': '.25em' }"
+                  v-if="isAuthenticated"
+                  label="Logout"
+                  icon="pi pi-power-off"
+                  :style="{ 'margin-left': '.25em' }"
+                  @click="RunLogout"
                 )
         Sidebar(:visible.sync="visibleLeft")
-          p Menú
+          h5 Menú
+          b {{user.full_name}} - {{user.username}}
+
           PanelMenu(:model="items")
         ProgressBar(mode="indeterminate" style="height: .5em" v-show="status=='loading'")
-        h4 user {{user}}
 </template>
 <script>
+//PrimeVue
 import Toolbar from "primevue/toolbar";
 import PanelMenu from "primevue/panelmenu";
 import InputText from "primevue/inputtext";
@@ -26,7 +29,9 @@ import Button from "primevue/button";
 import Sidebar from "primevue/sidebar";
 import ProgressBar from "primevue/progressbar";
 
+//Vuex
 import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   components: { PanelMenu, Toolbar, InputText, Button, Sidebar, ProgressBar },
@@ -38,13 +43,44 @@ export default {
           label: "Dashboard",
           icon: "pi pi-home",
           command: () => {
-            this.visibleLeft = false;
+            this.visibleLeft = false; //Oculta el Menu
             this.$router.push({ name: "Dashboard" });
           }
         },
+
+        {
+          label: "Contratos/Servicios",
+          icon: "pi pi-folder",
+          command: () => {
+            this.visibleLeft = false;
+            this.$router.push({ name: "Contracts" });
+          }
+        }
+      ]
+    };
+  },
+  computed: {
+    ...mapGetters(["isAuthenticated", "status", "user"])
+  },
+  methods: {
+    ...mapActions(["logout"]),
+    RunLogout() {
+      this.logout().then(() => {
+        this.$router.push({ name: "Login" });
+      });
+    }
+  },
+  created() {
+    //Add menu items according to user
+    if (this.user.is_superuser) {
+      this.items.push(
         {
           label: "Usuarios",
-          icon: "pi pi-users"
+          icon: "pi pi-users",
+          command: () => {
+            this.visibleLeft = false;
+            this.$router.push({ name: "Users" });
+          }
         },
         {
           label: "Proyectos",
@@ -52,14 +88,6 @@ export default {
           command: () => {
             this.visibleLeft = false;
             this.$router.push({ name: "Projects" });
-          }
-        },
-        {
-          label: "Contratos/Servicios",
-          icon: "pi pi-folder",
-          command: () => {
-            this.visibleLeft = false;
-            this.$router.push({ name: "Contracts" });
           }
         },
         {
@@ -84,11 +112,13 @@ export default {
             this.$router.push("/login");
           }
         }
-      ]
-    };
-  },
-  computed: {
-    ...mapGetters(["isAuthenticated", "status", "user"])
+      );
+    } else {
+      this.items.push({
+        label: "Mi Usuario",
+        icon: "pi pi-user"
+      });
+    }
   }
 };
 </script>

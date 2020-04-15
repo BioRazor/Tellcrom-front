@@ -36,6 +36,11 @@ function setLoginData(resp) {
   secureStorage.setItem("access_token", resp.access_token);
 }
 
+function removeLoginData() {
+  secureStorage.removeItem("user");
+  secureStorage.removeItem("access_token");
+}
+
 const getLoginData = {
   user: () => {
     try {
@@ -54,3 +59,4 @@ const getLoginData = {
 };
 export { setLoginData };
 export { getLoginData };
+export { removeLoginData };
