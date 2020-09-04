@@ -20,7 +20,7 @@
     "pug-plain-loader": "^1.0.0",
     "sass-loader": "^8.0.2",
     "secure-web-storage": "^1.0.2",
-    "simple-crypto-js": "^2.2.0",
+    "simple-crypto-js": "^2.3.0",
     "vue": "^2.6.11",
     "vue-router": "^3.1.5",
     "vuelidate": "^0.7.5",
